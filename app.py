@@ -1,3 +1,4 @@
+from flask import render_template, url_for
 from config import App
 from models import User
 
@@ -6,7 +7,7 @@ db = App.db
 
 @app.route('/')
 def home():
-    return 'Home page'
+    return render_template('home.html')
 
 @app.route('/create')
 def create():
