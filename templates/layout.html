@@ -6,52 +6,46 @@
   </head>
 
   <body>
-    <div id="navbar-left">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html"><img src="images/logo-normal.png" alt=""></a>
-        </div>
-
-        <div id="navbar">
-          <ul>
-            <li>
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="fa fa-angle-down"></span></a>
-            </li>
-            <li>  
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notes <span class="fa fa-angle-down"></span></a>
-            </li>
-            <li>  
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Money <span class="fa fa-angle-down"></span></a>
-              <div id="sub-options">
-                <ul id="categories">
-                  <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Commitments <span class="fa fa-angle-down"></span></a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Receivable <span class="fa fa-angle-down"></span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>  
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Friends <span class="fa fa-angle-down"></span></a>
-            </li>
-            <li>  
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pictures <span class="fa fa-angle-down"></span></a>
-            </li>
-            <li>  
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Portfolio <span class="fa fa-angle-down"></span></a>
-            </li>
-          </ul>
-        </div>
+    <div id="navbar-top">
+      {% block content_one %}
+      {% endblock %}
+      <button>Log out</button>
     </div>
-    {% block content %}
-    {% endblock %}
+    <div id="navbar-left">
+      <ul>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>  
+          <a href="#">Notes</a>
+        </li>
+        <li>  
+          <a href="#">Money</a>
+          <div id="sub-options">
+            <ul id="categories">
+              <li>
+                <a href="#">Commitments</a>
+              </li>
+              <li>
+                <a href="#">Receivable</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>  
+          <a href="#">Friends</a>
+        </li>
+        <li>  
+          <a href="#">Pictures</a>
+        </li>
+        <li>  
+          <a href="#">Portfolio</a>
+        </li>
+      </ul>
+    </div>
+    <div id="middle">
+      {% block content_two %}
+      {% endblock %}
     </div>
   </body>
 
