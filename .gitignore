@@ -3,3 +3,4 @@ venv
 conf
 test
 __pycache__
+*test*
