@@ -1,14 +1,14 @@
 from config import App
 import datetime
+from flask_login import UserMixin
 
 db = App.db
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    surname = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     pictures = db.relationship('Picture', backref='owner', lazy=True)
     notes = db.relationship('Note', backref='owner', lazy=True)
     friends = db.relationship('Friend', backref='mate', lazy=True)
