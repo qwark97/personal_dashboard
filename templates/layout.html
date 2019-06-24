@@ -9,7 +9,14 @@
     <div id="navbar-top">
       {% block content_one %}
       {% endblock %}
-      <button>Log out</button>
+      <div id="user-hello">
+          <span id="name">Hello {{ current_user.name }}</span>
+          <span id="summary">Today is {{ summary }}</span>
+          <span id="temp">Temperature at the moment is aproximately: {{ temp }}</span>
+      </div>
+      <form action="{{ url_for('logout') }}">
+        <button type="submit">Log out</button>
+      </form>
     </div>
     <div id="navbar-left">
       <ul>

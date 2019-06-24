@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Personal Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  </head>
+  <body>
+      {% block content %}
+      {% endblock %}
+  </body>
+  <footer>
+    {% block footer %}
+      &copy; Copyright 2019 by <a href="https://github.com/qwark97">Marcin Plata</a>.
+    {% endblock %}
+  </footer>
+</html>
