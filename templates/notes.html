@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% with message = get_flashed_messages() %}
+{% if messages %}
+    <h3>{{ message }}</h3>
+{% endif %}
+{% endwith %}
+<div id="notes">
+    <ul>
+        {% for note in notes %}
+            <div id="note">
+                <span>{{ note.content }}</span>
+                <span>Data dodania {{ note.date }}</span>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+<div id="new-notes">
+    <form action="/notes", method="POST">
+        <div id="new-content">
+            <input type="text" name="content" placeholder="Myślę, że...">
+        </div>
+        <button type="submit">Dodaj notatkę.</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}

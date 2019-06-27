@@ -7,8 +7,6 @@
 
   <body>
     <div id="navbar-top">
-      {% block content_one %}
-      {% endblock %}
       <div id="user-hello">
           <span id="name">Hello {{ current_user.name }}</span>
           <span id="summary">Today is {{ summary }}</span>
@@ -21,37 +19,37 @@
     <div id="navbar-left">
       <ul>
         <li>
-          <a href="#">Home</a>
+          <a href="/home">Home</a>
         </li>
         <li>  
-          <a href="#">Notes</a>
+          <a href="/notes">Notes</a>
         </li>
         <li>  
-          <a href="#">Money</a>
+          <a href="/home">Money</a>
           <div id="sub-options">
             <ul id="categories">
               <li>
-                <a href="#">Commitments</a>
+                <a href="/home">Commitments</a>
               </li>
               <li>
-                <a href="#">Receivable</a>
+                <a href="/home">Receivable</a>
               </li>
             </ul>
           </div>
         </li>
         <li>  
-          <a href="#">Friends</a>
+          <a href="/home">Friends</a>
         </li>
         <li>  
-          <a href="#">Pictures</a>
+          <a href="/home">Pictures</a>
         </li>
         <li>  
-          <a href="#">Portfolio</a>
+          <a href="/home">Portfolio</a>
         </li>
       </ul>
     </div>
     <div id="middle">
-      {% block content_two %}
+      {% block content %}
       {% endblock %}
     </div>
   </body>
