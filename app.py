@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from config import App
-from models import User
+from models import User, Note
 from helpers import get_weather, validate_name, validate_pass, validate_email
 from werkzeug import generate_password_hash, check_password_hash
 
@@ -92,10 +92,22 @@ def home():
     summary, temp = get_weather()
     return render_template('home.html', summary=summary, temp=temp)
 
-@app.route('/notes')
+@app.route('/notes', methods=['GET', 'POST', 'PUT'])
 @login_required
 def notes():
-    pass
+    summary, temp = get_weather()
+    notes_object = []
+    user_id = current_user.id
+
+    if request.method == 'POST':
+        content = request.form.get('content')
+        new_note = Note(content=content, user_id=user_id)
+        db.session.add(new_note)
+        db.session.commit()
+        return redirect(url_for('notes'))
+
+    notes_objects = User.query.filter_by(id=user_id).first().notes
+    return render_template('notes.html', summary=summary, temp=temp, notes=notes_objects)
 
 @app.route('/money')
 @login_required
