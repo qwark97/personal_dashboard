@@ -4,6 +4,7 @@ from config import App
 from models import User, Note
 from helpers import get_weather, validate_name, validate_pass, validate_email
 from werkzeug import generate_password_hash, check_password_hash
+import datetime
 
 app = App.app
 db = App.db
@@ -13,35 +14,36 @@ login_manager = App.login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-def portfolio():
-    pass
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
     if request.method == 'GET':
-        return render_template('signup.html')
+        return render_template('signin.html')
     
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
+    password_check = request.form.get('password_check')
 
     user = User.query.filter_by(email=email).first() 
 
+    if password != password_check:
+        flash('Both passwords must be the same')
+        return redirect(url_for('signin'))
     if user: 
         flash('User already exists')
-        return redirect(url_for('signup'))
+        return redirect(url_for('signin'))
 
     if not validate_email(email):
         flash('E-mail address is not valid')
-        return redirect(url_for('signup'))
+        return redirect(url_for('signin'))
 
     if not validate_pass(name):
         flash('Password is not valid')
-        return redirect(url_for('signup'))
+        return redirect(url_for('signin'))
 
     if not validate_name(name):
         flash('Name name must be between 4 and 20 characters lenght')
-        return redirect(url_for('signup'))
+        return redirect(url_for('signin'))
 
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
 
@@ -65,7 +67,6 @@ def login():
     remember = True if request.form.get('remember') else False
 
     user = User.query.filter_by(email=email).first() 
-    print(user)
     if not user:
         flash('There is no such user.')
         return redirect(url_for('login'))
@@ -100,14 +101,36 @@ def notes():
     user_id = current_user.id
 
     if request.method == 'POST':
-        content = request.form.get('content')
-        new_note = Note(content=content, user_id=user_id)
+        content = request.form.get('new-note').strip()
+        new_note = Note(content=content, user_id=user_id, date=datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
         db.session.add(new_note)
         db.session.commit()
         return redirect(url_for('notes'))
 
     notes_objects = User.query.filter_by(id=user_id).first().notes
-    return render_template('notes.html', summary=summary, temp=temp, notes=notes_objects)
+    return render_template('notes.html', summary=summary, temp=temp, notes=sorted(notes_objects, key=lambda x: x.date))
+
+@app.route('/update_note', methods=['POST'])
+@login_required
+def update_note():
+    user_id = current_user.id
+    new_content = request.form.get('edited-note').strip()
+    note_id = request.form.get('note-id')
+    old_note = Note.query.filter_by(id=note_id).first()
+    old_note.content = new_content
+    old_note.date = datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    db.session.commit()
+    return redirect(url_for('notes'))
+
+@app.route('/delete_note', methods=['POST'])
+@login_required
+def delete_note():
+    user_id = current_user.id
+    note_id = request.form.get('note-id')
+    old_note = Note.query.filter_by(id=note_id).first()
+    db.session.delete(old_note)
+    db.session.commit()
+    return redirect(url_for('notes'))
 
 @app.route('/money')
 @login_required
@@ -134,8 +157,16 @@ def friends():
 def pictures():
     pass
 
+@app.route('/portfolio')
+@login_required
+def portfolio():
+    pass
+
 with app.test_request_context():
     url_for('home')
+    url_for('login')
+    url_for('signin')
 
 if __name__ == "__main__":
     app.run(debug=True)
+
