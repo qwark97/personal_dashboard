@@ -10,19 +10,34 @@
     <ul>
         {% for note in notes %}
             <div id="note">
-                <span>{{ note.content }}</span>
-                <span>Data dodania {{ note.date }}</span>
+                <form action="/update_note", method="POST" id="update-form">
+                    <textarea 
+                        cols = "40"
+                        rows = "5"
+                        maxlength=250
+                        name="edited-note">{{ note.content }}</textarea>
+                    <button type="submit">Edit note</button>
+                    <button type="submit" formaction="/delete_note">Delete note</button>
+                    <input type="hidden" name="note-id" value="{{ note.id }}">
+                </form>
+                
+                <span>{{ note.date }}</span>
             </div>
         {% endfor %}
     </ul>
 </div>
 <div id="new-notes">
-    <form action="/notes", method="POST">
-        <div id="new-content">
-            <input type="text" name="content" placeholder="Myślę, że...">
-        </div>
-        <button type="submit">Dodaj notatkę.</button>
+    <form action="/notes", method="POST" id=new-note>
+        <textarea 
+            cols = "40"
+            rows = "5"
+            maxlength=250
+            name="new-note"
+            >I'm thinking about...
+        </textarea>
+        <button type="submit">Add note</button>
     </form>
+    
 </div>
 {% endblock %}
 
