@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from config import App
-from models import User, Note
+from models import User, Note, Friend
 from helpers import get_weather, validate_name, validate_pass, validate_email
 from werkzeug import generate_password_hash, check_password_hash
 import datetime
@@ -132,24 +132,61 @@ def delete_note():
     db.session.commit()
     return redirect(url_for('notes'))
 
-@app.route('/money')
+@app.route('/friends', methods=['POST', 'GET'])
 @login_required
-def money():
-    pass
+def friends():
+    summary, temp = get_weather()
+    notes_object = []
+    user_id = current_user.id
+
+    if request.method == 'POST':
+        name = request.form.get('new-friend').strip()
+        new_friend = Friend(name=name, user_id=user_id)
+        db.session.add(new_friend)
+        db.session.commit()
+        return redirect(url_for('friends'))
+
+    friends_objects = User.query.filter_by(id=user_id).first().friends
+    return render_template('friends.html', summary=summary, temp=temp, friends=sorted(friends_objects, key=lambda x: x.name))
+
+@app.route('/update_friend', methods=['POST'])
+@login_required
+def update_friend():
+    user_id = current_user.id
+    new_name = request.form.get('edited-friend').strip()
+    friend_id = request.form.get('friend-id')
+    old_friend = Friend.query.filter_by(id=friend_id).first()
+    old_friend.name = new_name
+    db.session.commit()
+    return redirect(url_for('friends'))
+
+@app.route('/delete_friend', methods=['POST'])
+@login_required
+def delete_friend():
+    user_id = current_user.id
+    friend_id = request.form.get('friend-id')
+    old_friend = Friend.query.filter_by(id=friend_id).first()
+    db.session.delete(old_friend)
+    db.session.commit()
+    return redirect(url_for('friends'))
 
 @app.route('/commitments')
 @login_required
 def commitments():
-    pass
+    summary, temp = get_weather()
+    notes_object = []
+    user_id = current_user.id
+
+    return render_template('commitments.html', summary=summary, temp=temp)
 
 @app.route('/receivable')
 @login_required
 def receivable():
     pass
-
-@app.route('/friends')
+    
+@app.route('/money')
 @login_required
-def friends():
+def money():
     pass
 
 @app.route('/pictures')

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% with message = get_flashed_messages() %}
+{% if messages %}
+    <h3>{{ message }}</h3>
+{% endif %}
+{% endwith %}
+<div id="friends">
+    <ul>
+        {% for friend in friends %}
+            <div id="friend">
+                <form action="/update_friend", method="POST" id="update-form">
+                    <textarea 
+                        cols = "20"
+                        rows = "1"
+                        maxlength=20
+                        name="edited-friend">{{ friend.name }}</textarea>
+                    <button type="submit">Edit friend</button>
+                    <button type="submit" formaction="/delete_friend">Delete friend</button>
+                    <input type="hidden" name="friend-id" value="{{ friend.id }}">
+                </form>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+<div id="new-friend">
+    <form action="/friends", method="POST" id=new-friend>
+        <textarea 
+            cols = "20"
+            rows = "1"
+            maxlength=20
+            name="new-friend"
+            ></textarea>
+        <button type="submit">Add friend</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
