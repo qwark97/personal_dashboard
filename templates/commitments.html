@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% with message = get_flashed_messages() %}
+{% if message %}
+    <h3>{{ message[0] }}</h3>
+{% endif %}
+{% endwith %}
+<div id="commitments">
+    <div id="existing-commitments">
+
+    </div>
+    <div id="new-commitment">
+        {% if friends %}
+        <form method="POST" action="/commitments">
+            <select name="friend_id">
+                {% for friend in friends %}
+                    <option value="{{ friend.id }}">{{ friend.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="reason" placeholder="Reason?">
+            <input type="text" name="how-much" placeholder="How much?">
+            <button type="submit" value="add">Add</button>
+        </form>
+        {% else %}
+        <h3>You have to add friend if you want to add any commitment</h3>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
