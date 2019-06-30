@@ -36,13 +36,13 @@ class Commitment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    date = db.Column(db.DateTime)
     friend_id = db.Column(db.Integer, db.ForeignKey('friend.id'), nullable=False)
 
 class Receivable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    date = db.Column(db.DateTime)
     friend_id = db.Column(db.Integer, db.ForeignKey('friend.id'), nullable=False)
     
