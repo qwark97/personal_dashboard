@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from config import App
-from models import User, Note, Friend
+from models import User, Note, Friend, Commitment, Receivable
 from helpers import get_weather, validate_name, validate_pass, validate_email
 from werkzeug import generate_password_hash, check_password_hash
 import datetime
@@ -170,14 +170,38 @@ def delete_friend():
     db.session.commit()
     return redirect(url_for('friends'))
 
-@app.route('/commitments')
+@app.route('/commitments', methods=['POST', 'GET'])
 @login_required
 def commitments():
     summary, temp = get_weather()
     notes_object = []
     user_id = current_user.id
 
-    return render_template('commitments.html', summary=summary, temp=temp)
+    if request.method == 'POST':
+        friend_id = request.form.get('friend_id')
+
+        title = request.form.get('reason')
+        try:
+            amount = request.form.get('how-much').replace(',','.')
+            amount = float(amount)
+        except:
+            flash('Enter valid amount!')
+            return redirect(url_for('commitments'))
+        new_commitment = Commitment(
+            amount=amount,
+            title=title,
+            date=datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
+            friend_id=friend_id)
+        db.session.add(new_commitment)
+        db.session.commit()
+    
+
+    friends_objects = User.query.filter_by(id=user_id).first().friends
+    all_commitments = [friend.commitments for friend in friends_objects]
+    
+    #print(all_commitments)
+
+    return render_template('commitments.html', summary=summary, temp=temp, friends=friends_objects)
 
 @app.route('/receivable')
 @login_required
