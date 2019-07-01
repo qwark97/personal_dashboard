@@ -197,11 +197,26 @@ def commitments():
     
 
     friends_objects = User.query.filter_by(id=user_id).first().friends
-    all_commitments = [friend.commitments for friend in friends_objects]
-    
-    #print(all_commitments)
+    all_commitments = [(friend.name, friend.commitments, sum(commitment.amount for commitment in friend.commitments)) 
+                      for friend in friends_objects]
 
-    return render_template('commitments.html', summary=summary, temp=temp, friends=friends_objects)
+    return render_template('commitments.html',
+                            summary=summary, 
+                            temp=temp, 
+                            friends=friends_objects, 
+                            all_commitments=all_commitments)
+
+@app.route('/delete_commitment', methods=['POST'])
+@login_required
+def delete_commitment():
+    user_id = current_user.id
+    commitment_id = request.form.get('commitment-id')
+    old_commitment = Commitment.query.filter_by(id=commitment_id).first()
+    db.session.delete(old_commitment)
+    db.session.commit()
+    return redirect(url_for('commitments'))
+
+                            
 
 @app.route('/receivable')
 @login_required
