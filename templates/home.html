@@ -1,11 +1,101 @@
 {% extends "layout.html" %}
 
-{% block content_one %}
-content_one
-{% endblock %}
+{% block content %}
+<div id="search-strap">
+    GOOGLE SEARCH API
+</div>
+{% if notes %}
+<div id="notes">
+    <ul>
+        {% for note in notes %}
+            <div id="note">
+                <form action="/update_note", method="POST" id="update-form">
+                    <textarea 
+                        cols = "40"
+                        rows = "5"
+                        maxlength=250
+                        name="edited-note">{{ note.content }}</textarea>
+                    <button type="submit">Edit note</button>
+                    <button type="submit" formaction="/delete_note">Delete note</button>
+                    <input type="hidden" name="note-id" value="{{ note.id }}">
+                </form>
+                <span>{{ note.date }}</span>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if money %}
+<div id="money">
+    {% if commitments %}
+    <div id="commitments">
+        <table>
+            <thead>
+                <tr>
+                    <td>How much?</td>
+                    <td>For what?</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for commitment in commitments %}
+                <tr>
+                    <td>{{ commitment.amount }}</td>
+                    <td>{{ commitment.title }}</td>
+                    <td>
+                        <form action="/delete_commitment", method="POST" id="update-form">
+                            <button type="submit">x</button>
+                            <input type="hidden" name="commitment-id" value="{{ commitment.id }}">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>Summary: {{ commitment_sum }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <div id="money_summary">
+        {% if money_summary > 0 %}
+            <h3>People have a debt to you: {{ money_summary }}</h3>
+        {% elif money_summary < 0 %}
+            <h3>You have debt in the amount: {{ money_summary }}</h3>
+        {% endif %}
+    </div>
+    {% if receivables %}
+    <div id="receivables">
+        <table>
+            <thead>
+                <tr>
+                    <td>How much?</td>
+                    <td>For what?</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for receivable in receivables %}
+                <tr>
+                    <td>{{ receivable.amount }}</td>
+                    <td>{{ receivable.title }}</td>
+                    <td>
+                        <form action="/delete_receivable", method="POST" id="update-form">
+                            <button type="submit">x</button>
+                            <input type="hidden" name="receivable-id" value="{{ receivable.id }}">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>Summary: {{ receivable_sum }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
 
-{% block content_two %}
-content_two
+WYSZUKIWARKA GOOGLE I ZROBIĆ Z TEGO PIĘKNĄ STRONĘ GŁÓWNĄ JAK GOOGLE ALE Z BAJERAMI
 {% endblock %}
 
 {% block footer %}
