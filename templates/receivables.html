@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% with message = get_flashed_messages() %}
+{% if message %}
+    <h3>{{ message[0] }}</h3>
+{% endif %}
+{% endwith %}
+<div id="receivables">
+    <div id="existing-receivables">
+        {% for friend, receivables, sum in all_receivables %}
+            {% if receivables %}
+                <div id="receivable">
+                    <h4>{{ friend }}</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>How much?</td>
+                                <td>For what?</td>
+                                <td>Since?</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for receivable in receivables %}
+                            <tr>
+                                <td>{{ receivable.amount }}</td>
+                                <td>{{ receivable.title }}</td>
+                                <td>{{ receivable.date }}</td>
+                                <td>
+                                    <form action="/delete_receivable", method="POST" id="update-form">
+                                        <button type="submit">x</button>
+                                        <input type="hidden" name="receivable-id" value="{{ receivable.id }}">
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                        
+                        {% endfor %}
+                        <tr>
+                            <td>Summary: {{ sum }}</td>
+                        </tr>
+                        
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div id="new-receivable">
+        {% if friends %}
+        <form method="POST" action="/receivables">
+            <select name="friend_id">
+                {% for friend in friends %}
+                    <option value="{{ friend.id }}">{{ friend.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="reason" placeholder="Reason?">
+            <input type="text" name="how-much" placeholder="How much?">
+            <button type="submit" value="add">Add</button>
+        </form>
+        {% else %}
+        <h3>You have to add friend if you want to add any receivable</h3>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
