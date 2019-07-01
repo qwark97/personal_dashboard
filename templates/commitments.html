@@ -8,7 +8,43 @@
 {% endwith %}
 <div id="commitments">
     <div id="existing-commitments">
-
+        {% for friend, commitments, sum in all_commitments %}
+            {% if commitments %}
+                <div id="commitment">
+                    <h4>{{ friend }}</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>How much?</td>
+                                <td>For what?</td>
+                                <td>Since?</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for commitment in commitments %}
+                            <tr>
+                                <td>{{ commitment.amount }}</td>
+                                <td>{{ commitment.title }}</td>
+                                <td>{{ commitment.date }}</td>
+                                <td>
+                                    <form action="/delete_commitment", method="POST" id="update-form">
+                                        <button type="submit">x</button>
+                                        <input type="hidden" name="commitment-id" value="{{ commitment.id }}">
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                        
+                        {% endfor %}
+                        <tr>
+                            <td>Summary: {{ sum }}</td>
+                        </tr>
+                        
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
     <div id="new-commitment">
         {% if friends %}
