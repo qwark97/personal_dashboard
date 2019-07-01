@@ -218,10 +218,51 @@ def delete_commitment():
 
                             
 
-@app.route('/receivable')
+@app.route('/receivables', methods=['POST', 'GET'])
 @login_required
-def receivable():
-    pass
+def receivables():
+    summary, temp = get_weather()
+    notes_object = []
+    user_id = current_user.id
+
+    if request.method == 'POST':
+        friend_id = request.form.get('friend_id')
+
+        title = request.form.get('reason')
+        try:
+            amount = request.form.get('how-much').replace(',','.')
+            amount = float(amount)
+        except:
+            flash('Enter valid amount!')
+            return redirect(url_for('receivables'))
+        new_receivable = Receivable(
+            amount=amount,
+            title=title,
+            date=datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
+            friend_id=friend_id)
+        db.session.add(new_receivable)
+        db.session.commit()
+    
+
+    friends_objects = User.query.filter_by(id=user_id).first().friends
+    all_receivables = [(friend.name, friend.receivables, sum(receivable.amount for receivable in friend.receivables)) 
+                      for friend in friends_objects]
+
+    return render_template('receivables.html',
+                            summary=summary, 
+                            temp=temp, 
+                            friends=friends_objects, 
+                            all_receivables=all_receivables)
+
+@app.route('/delete_receivable', methods=['POST'])
+@login_required
+def delete_receivable():
+    user_id = current_user.id
+    receivable_id = request.form.get('receivable-id')
+    old_receivable = Receivable.query.filter_by(id=receivable_id).first()
+    db.session.delete(old_receivable)
+    db.session.commit()
+    return redirect(url_for('receivables'))
     
 @app.route('/money')
 @login_required
