@@ -91,7 +91,15 @@ def logout():
 @login_required
 def home():
     summary, temp = get_weather()
-    return render_template('home.html', summary=summary, temp=temp)
+    return render_template('home.html', 
+                            summary=summary, 
+                            temp=temp,
+                            notes=None,
+                            money=False,
+                            commitments=None,
+                            commitment_sum=None,
+                            receivable_sum=None,
+                            money_summary=None)
 
 @app.route('/notes', methods=['GET', 'POST'])
 @login_required
@@ -258,11 +266,6 @@ def delete_receivable():
     db.session.delete(old_receivable)
     db.session.commit()
     return redirect(url_for('receivables'))
-    
-@app.route('/money')
-@login_required
-def money():
-    pass
 
 @app.route('/pictures')
 @login_required
