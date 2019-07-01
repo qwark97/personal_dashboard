@@ -93,11 +93,10 @@ def home():
     summary, temp = get_weather()
     return render_template('home.html', summary=summary, temp=temp)
 
-@app.route('/notes', methods=['GET', 'POST', 'PUT'])
+@app.route('/notes', methods=['GET', 'POST'])
 @login_required
 def notes():
     summary, temp = get_weather()
-    notes_object = []
     user_id = current_user.id
 
     if request.method == 'POST':
@@ -136,7 +135,6 @@ def delete_note():
 @login_required
 def friends():
     summary, temp = get_weather()
-    notes_object = []
     user_id = current_user.id
 
     if request.method == 'POST':
@@ -174,7 +172,6 @@ def delete_friend():
 @login_required
 def commitments():
     summary, temp = get_weather()
-    notes_object = []
     user_id = current_user.id
 
     if request.method == 'POST':
@@ -214,9 +211,7 @@ def delete_commitment():
     old_commitment = Commitment.query.filter_by(id=commitment_id).first()
     db.session.delete(old_commitment)
     db.session.commit()
-    return redirect(url_for('commitments'))
-
-                            
+    return redirect(url_for('commitments'))                       
 
 @app.route('/receivables', methods=['POST', 'GET'])
 @login_required
