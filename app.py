@@ -2,7 +2,7 @@ from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from config import App
 from models import User, Note, Friend, Commitment, Receivable
-from helpers import get_weather, validate_name, validate_pass, validate_email
+from helpers import get_weather, validate_name, validate_pass, validate_email,flatten
 from werkzeug import generate_password_hash, check_password_hash
 import datetime
 
@@ -91,15 +91,32 @@ def logout():
 @login_required
 def home():
     summary, temp = get_weather()
+    user_id = current_user.id
+    friends_objects = User.query.filter_by(id=user_id).first().friends
+
+    notes_objects = User.query.filter_by(id=user_id).first().notes
+
+    all_receivables = flatten([friend.receivables for friend in friends_objects])
+    all_commitments = flatten([friend.commitments for friend in friends_objects])
+
+    money = True if all_receivables or all_commitments else False
+
+    receivables = flatten([friend.receivables for friend in friends_objects])
+    commitments = flatten([friend.commitments for friend in friends_objects])
+
+    receivable_sum = sum(receivable.amount for receivable in all_receivables)
+    commitment_sum = sum(commitment.amount for commitment in all_commitments)
+
+    sums=(receivable_sum, commitment_sum, round(abs(receivable_sum-commitment_sum), 2))
+
     return render_template('home.html', 
                             summary=summary, 
                             temp=temp,
-                            notes=None,
-                            money=False,
-                            commitments=None,
-                            commitment_sum=None,
-                            receivable_sum=None,
-                            money_summary=None)
+                            notes=notes_objects,
+                            money=money,
+                            receivables=receivables,
+                            commitments=commitments,
+                            sums=sums)
 
 @app.route('/notes', methods=['GET', 'POST'])
 @login_required
