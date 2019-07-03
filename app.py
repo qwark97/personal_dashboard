@@ -104,10 +104,11 @@ def home():
     receivables = flatten([friend.receivables for friend in friends_objects])
     commitments = flatten([friend.commitments for friend in friends_objects])
 
-    receivable_sum = sum(receivable.amount for receivable in all_receivables)
-    commitment_sum = sum(commitment.amount for commitment in all_commitments)
+    receivable_sum = round(sum(receivable.amount for receivable in all_receivables), 2)
+    commitment_sum = round(sum(commitment.amount for commitment in all_commitments), 2)
+    money_summary = round(abs(receivable_sum-commitment_sum), 2)
 
-    sums=(receivable_sum, commitment_sum, round(abs(receivable_sum-commitment_sum), 2))
+    sums=(receivable_sum, commitment_sum, money_summary)
 
     return render_template('home.html', 
                             summary=summary, 
@@ -293,11 +294,6 @@ def pictures():
 @login_required
 def portfolio():
     pass
-
-with app.test_request_context():
-    url_for('home')
-    url_for('login')
-    url_for('signin')
 
 if __name__ == "__main__":
     app.run(debug=True)
