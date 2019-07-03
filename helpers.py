@@ -1,6 +1,8 @@
 import geocoder
 from darksky import forecast
 import re
+from itertools import chain
+
 def get_weather():
     API_KEY = '71f646055b315e115ef69e0b11d1eee4'
     lat, lng = geocoder.ip('me').latlng
@@ -26,3 +28,6 @@ def validate_email(email):
     if re.match(r'^.+@\w+\.\w{2,3}$', email):
         return True
     return False
+
+def flatten(listOfLists):
+    return chain.from_iterable(listOfLists)
