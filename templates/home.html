@@ -4,6 +4,7 @@
 <div id="search-strap">
     GOOGLE SEARCH API
 </div>
+
 {% if notes %}
 <div id="notes">
     <ul>
@@ -25,12 +26,15 @@
     </ul>
 </div>
 {% endif %}
+
 {% if money %}
 <div id="money">
+
     {% if commitments %}
     <div id="commitments">
         <table>
             <thead>
+                <h4>Commitments</h4>
                 <tr>
                     <td>How much?</td>
                     <td>For what?</td>
@@ -50,23 +54,29 @@
                 </tr>
             {% endfor %}
                 <tr>
-                    <td>Summary: {{ commitment_sum }}</td>
+                    <td>Summary: {{ sums[1] }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     {% endif %}
+
+    {% if sums[2] %}
     <div id="money_summary">
-        {% if money_summary > 0 %}
-            <h3>People have a debt to you: {{ money_summary }}</h3>
-        {% elif money_summary < 0 %}
-            <h3>You have debt in the amount: {{ money_summary }}</h3>
+        {% if sums[1] > sums[0] %}
+            <h3>You owe people {{ sums[2] }}</h3>
+        {% else %}
+            <h3>People owe you {{ sums[2] }}</h3>
         {% endif %}
     </div>
+    {% endif %}
+
+
     {% if receivables %}
     <div id="receivables">
         <table>
             <thead>
+                <h4>Receivables</h4>
                 <tr>
                     <td>How much?</td>
                     <td>For what?</td>
@@ -86,16 +96,16 @@
                 </tr>
             {% endfor %}
                 <tr>
-                    <td>Summary: {{ receivable_sum }}</td>
+                    <td>Summary: {{ sums[0] }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     {% endif %}
+
 </div>
 {% endif %}
 
-WYSZUKIWARKA GOOGLE I ZROBIĆ Z TEGO PIĘKNĄ STRONĘ GŁÓWNĄ JAK GOOGLE ALE Z BAJERAMI
 {% endblock %}
 
 {% block footer %}
