@@ -6,10 +6,10 @@
     <h3>{{ message }}</h3>
 {% endif %}
 {% endwith %}
-<div id="notes">
+<div class="notes">
     <ul>
         {% for note in notes %}
-            <div id="note">
+            <div class="note">
                 <form action="/update_note", method="POST" id="update-form">
                     <textarea 
                         cols = "40"
@@ -26,7 +26,7 @@
         {% endfor %}
     </ul>
 </div>
-<div id="new-notes">
+<div class="new-notes">
     <form action="/notes", method="POST" id=new-note>
         <textarea 
             cols = "40"

@@ -2,12 +2,14 @@
 <html>
   <head>
     <title>Personal Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
   </head>
 
   <body>
-    <div id="navbar-top">
-      <div id="user-hello">
+    <div class="navbar-top">
+      <div class="user-hello">
           <span id="name">Hello {{ current_user.name }}</span>
           <span id="summary">Today is {{ summary }}</span>
           <span id="temp">Temperature at the moment is aproximately: {{ temp }}</span>
@@ -16,8 +18,8 @@
         <button type="submit">Log out</button>
       </form>
     </div>
-    <div id="navbar-left">
-      <ul>
+    <nav class="navbar-left">
+      <ul class="options">
         <li>
           <a href="/home">Home</a>
         </li>
@@ -26,8 +28,8 @@
         </li>
         <li>  
           <a>Money</a>
-          <div id="sub-options">
-            <ul id="categories">
+          <div class="sub-options">
+            <ul class="categories">
               <li>
                 <a href="/commitments">Commitments</a>
               </li>
@@ -47,8 +49,8 @@
           <a href="#">Portfolio</a>
         </li>
       </ul>
-    </div>
-    <div id="middle">
+    </nav>
+    <div class="middle">
       {% block content %}
       {% endblock %}
     </div>

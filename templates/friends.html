@@ -6,10 +6,10 @@
     <h3>{{ message }}</h3>
 {% endif %}
 {% endwith %}
-<div id="friends">
+<div class="friends">
     <ul>
         {% for friend in friends %}
-            <div id="friend">
+            <div class="friend">
                 <form action="/update_friend", method="POST" id="update-form">
                     <textarea 
                         cols = "20"
@@ -24,7 +24,7 @@
         {% endfor %}
     </ul>
 </div>
-<div id="new-friend">
+<div class="new-friend">
     <form action="/friends", method="POST" id=new-friend>
         <input 
             cols = "20"

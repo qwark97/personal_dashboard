@@ -6,11 +6,11 @@
     <h3>{{ message[0] }}</h3>
 {% endif %}
 {% endwith %}
-<div id="commitments">
-    <div id="existing-commitments">
+<div class="commitments">
+    <div class="existing-commitments">
         {% for friend, commitments, sum in all_commitments %}
             {% if commitments %}
-                <div id="commitment">
+                <div class="commitment">
                     <h4>{{ friend }}</h4>
                     <table>
                         <thead>
@@ -46,7 +46,7 @@
             {% endif %}
         {% endfor %}
     </div>
-    <div id="new-commitment">
+    <div class="new-commitment">
         {% if friends %}
         <form method="POST" action="/commitments">
             <select name="friend_id">

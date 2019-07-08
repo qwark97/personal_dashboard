@@ -6,32 +6,30 @@
 </div>
 
 {% if notes %}
-<div id="notes">
-    <ul>
-        {% for note in notes %}
-            <div id="note">
-                <form action="/update_note", method="POST" id="update-form">
-                    <textarea 
-                        cols = "40"
-                        rows = "5"
-                        maxlength=250
-                        name="edited-note">{{ note.content }}</textarea>
-                    <button type="submit">Edit note</button>
-                    <button type="submit" formaction="/delete_note">Delete note</button>
-                    <input type="hidden" name="note-id" value="{{ note.id }}">
-                </form>
-                <span>{{ note.date }}</span>
-            </div>
-        {% endfor %}
-    </ul>
+<div class="notes horizontal-scroll-wrapper squares">
+    {% for note in notes %}
+        <div class="note">
+            <form action="/update_note", method="POST" id="update-form">
+                <textarea 
+                    cols = "40"
+                    rows = "5"
+                    maxlength=250
+                    name="edited-note">{{ note.content }}</textarea>
+                <button type="submit">Edit note</button>
+                <button type="submit" formaction="/delete_note">Delete note</button>
+                <input type="hidden" name="note-id" value="{{ note.id }}">
+            </form>
+            <span>{{ note.date }}</span>
+        </div>
+    {% endfor %}
 </div>
 {% endif %}
 
 {% if money %}
-<div id="money">
+<div class="money">
 
     {% if commitments %}
-    <div id="commitments">
+    <div class="commitments">
         <table>
             <thead>
                 <h4>Commitments</h4>
@@ -62,7 +60,7 @@
     {% endif %}
 
     {% if sums[2] %}
-    <div id="money_summary">
+    <div class="money_summary">
         {% if sums[1] > sums[0] %}
             <h3>You owe people {{ sums[2] }}</h3>
         {% else %}
@@ -73,7 +71,7 @@
 
 
     {% if receivables %}
-    <div id="receivables">
+    <div class="receivables">
         <table>
             <thead>
                 <h4>Receivables</h4>
