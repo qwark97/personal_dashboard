@@ -5,6 +5,7 @@ from models import User, Note, Friend, Commitment, Receivable
 from helpers import get_weather, validate_name, validate_pass, validate_email,flatten
 from werkzeug import generate_password_hash, check_password_hash
 import datetime
+import re
 
 app = App.app
 db = App.db
