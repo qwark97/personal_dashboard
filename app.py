@@ -6,6 +6,7 @@ from helpers import get_weather, validate_name, validate_pass, validate_email,fl
 from werkzeug import generate_password_hash, check_password_hash
 import datetime
 import urllib
+import re
 
 app = App.app
 db = App.db
