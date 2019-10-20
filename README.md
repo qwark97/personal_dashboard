@@ -29,10 +29,15 @@ pip install virtualenv
 cd path/to/project/directory
 ```
 ```
-virtualenv venv
+virtualenv venv -p python3
 ```
+UNIX
 ```
-venv/Scripts/activate
+venv/bin/activate
+```
+WINDOWS
+```
+venv/bin/activate
 ```
 
 Now you should have your virtual environment active. From now on all following packages will be installed in this particular environment. 
